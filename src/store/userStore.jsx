@@ -17,7 +17,7 @@ const useUserStore = create((set, get) => ({
     }
   },
 
-  // Create a new user with unique ID
+  // Create a new user with unique ID(post)
   createUser: async (payload) => {
     try {
       const users = get().users;
@@ -29,7 +29,7 @@ const useUserStore = create((set, get) => ({
     }
   },
 
-  // Update existing user
+  // Update existing user(put)
   updateUser: async (id, payload) => {
     try {
       const users = get().users;
