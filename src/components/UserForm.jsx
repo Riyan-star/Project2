@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import useUserStore from "../store/userStore";
 import '../styles/styles.css';
 
-//  adding/editing user
+//adding editing user
 
 function UserForm({ user = null, onClose }) {
   const { createUser, updateUser } = useUserStore();

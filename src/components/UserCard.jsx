@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import useUserStore from "../store/userStore";
 import UserForm from "./UserForm";
-import '../styles/styles.css';
+import ConfirmModal from "./ConfirmModal";
+import "../styles/styles.css";
 
 function UserCard({ user }) {
   const [showEditForm, setShowEditForm] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const deleteUser = useUserStore((state) => state.deleteUser);
 
   return (
     <>
@@ -15,19 +19,20 @@ function UserCard({ user }) {
           <p><strong>Name:</strong> {user.name?.firstname || ""} {user.name?.lastname || ""}</p>
         </Link>
 
+        {/* Edit button */}
         <button
           onClick={() => setShowEditForm(true)}
-          style={{
-            marginTop: '10px',
-            padding: '0.5rem 1rem',
-            borderRadius: '8px',
-            backgroundColor: '#f9a8d4',
-            border: 'none',
-            cursor: 'pointer',
-            fontWeight: 'bold'
-          }}
+          className="edit-btn"
         >
           Edit
+        </button>
+
+        {/* Delete button */}
+        <button
+          onClick={() => setShowConfirm(true)}
+          className="delete-btn"
+        >
+          Delete
         </button>
       </div>
 
@@ -35,6 +40,17 @@ function UserCard({ user }) {
         <UserForm
           user={user}
           onClose={() => setShowEditForm(false)}
+        />
+      )}
+
+      {showConfirm && (
+        <ConfirmModal
+          message={`Are you sure you want to delete ${user.username}?`}
+          onConfirm={() => {
+            deleteUser(user.id);
+            setShowConfirm(false);
+          }}
+          onCancel={() => setShowConfirm(false)}
         />
       )}
     </>

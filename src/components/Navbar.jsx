@@ -1,6 +1,6 @@
-// src/components/Navbar.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Users } from "lucide-react"; //User management icon
 import UserForm from "./UserForm";
 import useUserStore from "../store/userStore";
 import '../styles/styles.css';
@@ -17,7 +17,11 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <Link to="/">User Dashboard</Link>
+        <Link to="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <Users size={22} /> 
+          <span>User Management</span>
+        </Link>
+
         <div>
           <button
             onClick={() => setShowForm(true)}

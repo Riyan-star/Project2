@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import useUserStore from "../store/userStore";
-import '../styles/styles.css';
+import ConfirmModal from "./ConfirmModal";
+import "../styles/styles.css";
 
 function UserDetail() {
   const { id } = useParams();
-  const { users } = useUserStore();
+  const navigate = useNavigate();
+  const { users, deleteUser } = useUserStore();
   const [user, setUser] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
-    if (!id) return; // skip if id is missing
+    if (!id) return;
 
     const existingUser = users.find(u => u.id === parseInt(id));
     if (existingUser) {
@@ -31,7 +34,28 @@ function UserDetail() {
       <div className="detail-card user-card"><strong>Email:</strong> {user.email}</div>
       <div className="detail-card user-card"><strong>Name:</strong> {user.name?.firstname} {user.name?.lastname}</div>
       <div className="detail-card user-card"><strong>Phone:</strong> {user.phone}</div>
+
+      {/* Delete button opens modal */}
+      <button
+        onClick={() => setShowConfirm(true)}
+        className="delete-btn"
+      >
+        Delete
+      </button>
+
       <Link to="/" className="back-button">← Back to Users</Link>
+
+      {showConfirm && (
+        <ConfirmModal
+          message={`Are you sure you want to delete ${user.username}?`}
+          onConfirm={() => {
+            deleteUser(user.id);
+            setShowConfirm(false);
+            navigate("/"); // go back to list after delete
+          }}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
     </div>
   );
 }

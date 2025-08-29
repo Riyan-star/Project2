@@ -39,6 +39,22 @@ const useUserStore = create((set, get) => ({
       set({ error: err.message });
     }
   },
+
+  //  Delete user (DELETE)
+  deleteUser: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      // perform API delete
+      await axios.delete(`https://fakestoreapi.com/users/${id}`);
+      // update local state
+      set((state) => ({
+        users: state.users.filter((u) => u.id !== id),
+        loading: false
+      }));
+    } catch (err) {
+      set({ error: err.message, loading: false });
+    }
+  },
 }));
 
 export default useUserStore;
